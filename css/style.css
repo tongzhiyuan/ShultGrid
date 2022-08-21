@@ -1,0 +1,107 @@
+/*全局*/
+*
+{
+}
+body 
+{
+  background: #76b852;
+  /*background: -webkit-linear-gradient(right, #76b852, #8DC26F);
+  background: -moz-linear-gradient(right, #76b852, #8DC26F);
+  background: -o-linear-gradient(right, #76b852, #8DC26F);
+  background: linear-gradient(to left, #76b852, #8DC26F);      
+  */
+}
+span,p
+{
+  font-size: 2rem;
+  color: #FFFFFF;
+  font-weight: 100;
+}
+
+/*标题*/
+.headline
+{
+  font-family: "华文彩云";
+  font-weight: 100;
+  font-size: 5rem;
+  color: #FFFFFF;
+  display: block;
+  text-align: center;
+  margin: 6rem 0 2rem 0;
+}
+
+/*秒表*/
+
+/*下拉框*/
+.choiceContainer
+{
+}
+#choseSign
+{
+  margin-left: 2rem;
+}
+select
+{
+  font-family: "微软雅黑";
+  background: rgba(0,0,0,0);
+  width: 20rem;
+  height: 4rem;
+  font-size: 2rem;
+  color: #FFFFFF;
+  text-align: center;
+  border: .1rem #FFFFFF solid;
+  border-radius: .5rem;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;
+}
+
+option
+{
+  /*width: 2rem;*/
+  color: black;
+  background: #A6E1EC;
+  line-height: 2rem;
+  font-size: .7rem;
+}
+
+select:focus
+{
+  border: .5rem #ddd solid;
+  box-shadow: 0 0 1rem .1rem #DDDDDD;
+}
+option:hover
+{
+  background: #EBCCD1;
+}
+/*方格*/
+#gridContainer
+{
+  width: 90%;
+  margin: 3rem auto;
+}
+.square
+{
+  border: .05rem solid #FFF;
+  float: left;
+  position:relative;
+}
+.square > .number
+{
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/*点击效果*/
+.rightTouch
+{
+  border: .05rem solid #76b852;
+  color: #76b852;
+}
+.rightTouch > span
+{
+  color: #76b852;
+}

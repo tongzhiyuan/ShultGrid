@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>舒尔特方格</title>
+  <meta charset='utf-8' />
+  <link rel="stylesheet" href="css/style.css">
+  <script type="text/javascript">
+    var pixclPatio = 1 / window.devicePixelRatio;
+    if (window.screen.width < 800)
+    {
+      document.write('<meta name="viewport" content="width=device-width,initial-scale=' + pixclPatio + ',minimum-scale=' + pixclPatio + ',maximum-scale=' + pixclPatio + ',user-scalable=no" />');
+      var html = document.getElementsByTagName('html')[0];
+      var pageWidth = html.getBoundingClientRect().width;
+      html.style.fontSize = pageWidth / 37.5+ 'px';
+    }
+    else
+    {
+      document.write('<meta name="viewport" content="width=device-width,initial-scale=' + pixclPatio + ',minimum-scale=' + pixclPatio + ',maximum-scale=' + pixclPatio + ',user-scalable=no" />');
+        var html = document.getElementsByTagName('html')[0];
+        var pageWidth = html.getBoundingClientRect().width;
+        html.style.fontSize = pageWidth / 120.5+ 'px';
+
+      document.write('<link rel="stylesheet" href="css/pc.css">');
+    }
+  </script>
+  <script type="text/javascript" src="js/tool.js"></script>
+</head> 
+<body>
+  <h1 class="headline">舒尔特方格</h1>
+  <div class='choiceContainer'>
+    <span id='choseSign'>请选择规格：</span>
+    <select id='sizeChose'>
+      <option value="3">&nbsp;&nbsp;--选择规格--</option>
+      <option value="3">&nbsp;&nbsp;3 ✖ 3</option>
+      <option value="4">&nbsp;&nbsp;4 ✖ 4</option>
+      <option value="5">&nbsp;&nbsp;5 ✖ 5</option>
+      <option value="6">&nbsp;&nbsp;6 ✖ 6</option>
+      <option value="7">&nbsp;&nbsp;7 ✖ 7</option>
+      <option value="8">&nbsp;&nbsp;8 ✖ 8</option>
+      <option value="9">&nbsp;&nbsp;9 ✖ 9</option>
+      <option value="10">10 ✖ 10</option>
+    </select>
+  </div>
+  <div id='gridContainer' last='0'></div>
+  <span id='choseSign'>用时：</span>
+  <span id='minSpan'></span>
+  <span id='secondSpan'>0</span><span>.</span>
+    <span id='decimalSpan'>00</span><span>秒</span>
+</body>
+<script>
+  var sizeChose     = document.getElementById('sizeChose');
+  var gridContainer = document.getElementById('gridContainer');
+  var minSpan       = document.getElementById('minSpan');
+  var secondrSpan   = document.getElementById('secondSpan');
+  var decimalSpan   = document.getElementById('decimalSpan');
+  var sideLength    = sizeChose.value;
+  var num           = Math.pow(sideLength, 2);
+  var timer;
+  
+  function cleargrid()
+  {
+    gridContainer.innerHTML='';
+    gridContainer.setAttribute('last',0);
+  }
+  function randomGetDigitOne(a, b) {
+    return Math.random()>.5 ? -1 : 1;
+  }
+
+  function randSort()
+  {
+    var numerals      = new Array(num);
+    for(var i=0; i<num; i++)
+    {
+      numerals[i] = i + 1;
+    }
+    numerals.sort(randomGetDigitOne);
+    return numerals;
+  }
+
+  function chronograph(status)
+  {
+    if (status === 'start') 
+    {
+      var time  = 0;
+      var minNo = 0,secondNo = 0,decimalNo = 0;
+      timer = setInterval(
+        function(){
+          time++;
+          minNo     = Math.floor(time / 100 / 60);
+          secondNo  = Math.floor(time / 100 % 60);
+          decimalNo = Math.floor(time % 100);
+          if(minNo > 0) minSpan.innerHTML = minNo + '分';
+          secondSpan.innerHTML = secondNo;
+          if(decimalNo > 10) decimalSpan.innerHTML = Math.floor(time % 100);
+          else decimalSpan.innerHTML = '0' + Math.floor(time % 100);
+        },10)
+    }
+    if (status === 'end' )
+    {
+      window.clearInterval(timer);
+    }
+  }
+  
+  function touchSquare()
+  {
+    var nowNumber  = Number(this.firstChild.innerHTML);
+    var lastNumber = Number(gridContainer.getAttribute('last'));
+    if(nowNumber == lastNumber + 1)
+    {
+      addClass(this,'rightTouch');
+      gridContainer.setAttribute('last',nowNumber);
+      if(nowNumber == 1) chronograph('start');
+      if(nowNumber == num) chronograph('end');
+    }
+  }
+
+  function getSquare(numerals)
+  {
+    for(var i=0; i<num; i++)
+      {
+        var square              = document.createElement('div');
+        square.className        = 'square';
+        square.style.width      = String(100/sideLength - 0.5)+'%';
+        square.style.paddingTop = String(100/sideLength - 0.5)+'%';
+        square.innerHTML        = "<span class='number' >" + numerals[i] + '</span>';
+        //square.addEventListener('touchstart', touchSquare);
+        square.addEventListener('click', touchSquare);
+	      gridContainer.appendChild(square);
+      }
+  }
+  function pcAdaptSign()
+  {
+    if(window.screen.width > 800 && !document.getElementById('pcAdaptSign'))
+    {
+      var body = document.getElementsByTagName('body')[0];
+      var sign = document.createElement('p');
+      sign.id = 'pcAdaptSign'
+      sign.innerHTML   = ''   //电脑端打开显示的提醒
+      body.appendChild(sign);
+    }
+  }
+  
+  function createShult()
+  {
+    sideLength = sizeChose.value;
+    num        = Math.pow(sideLength, 2);
+    //在选择规格时，清除之前的方格，以方便重新部署方格
+    cleargrid();
+    //方格内的数字重新随机排序
+    var numerals = randSort();
+    //生成方格
+    getSquare(numerals);
+    //如果是电脑端打开，显示提醒
+    pcAdaptSign()
+  }
+  
+  window.onload      = createShult;
+  sizeChose.onchange = createShult;
+
+</script>
+<!-- Pixel Code for https://tj.av6v.com/ -->
+<script defer src="https://tj.av6v.com/pixel/dodVd002LJUctMD6"></script>
+<!-- END Pixel Code -->
+</html>
